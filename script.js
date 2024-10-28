@@ -26,7 +26,7 @@ function searchAdress() {
         estado.value = "";
         bairro.value = "";
         header.appendChild(error)
-        error.style.color = "black"
+        error.style.color = "red"
 
         error.innerText = "Cep Inválido"
 
