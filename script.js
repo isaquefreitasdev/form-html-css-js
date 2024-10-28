@@ -18,13 +18,16 @@ function searchAdress() {
     }
 
 
-    if (valueCep.length > 8) {
+    if (valueCep.length != 8) {
+        error.remove()
         cep.classList.add("error")
         rua.value = "";
         cidade.value = "";
         estado.value = "";
         bairro.value = "";
         header.appendChild(error)
+        error.style.color = "black"
+
         error.innerText = "Cep Inválido"
 
     }
@@ -36,17 +39,21 @@ function searchAdress() {
             cidade.value = data.localidade;
             estado.value = data.uf;
             bairro.value = data.bairro;
-            console.log(data)
-            console.log(cep.value.length)
+            
+            error.style.color = "red"
 
             cep.classList.remove("error")
             error.remove()
         }
         else {
             cep.classList.add("error")
+            error.innerText = "";
+
             rua.value = "";
             cidade.value = "";
             estado.value = "";
+            bairro.value = ""
+            numero.value = ""
             header.appendChild(error)
             error.innerText = "Cep Inválido"
 
@@ -58,35 +65,54 @@ function searchAdress() {
 function validationForm(e) {
     e.preventDefault()
     const valueCep = cep.value;
-    let error = document.querySelector("#p-error");
+    let error = document.querySelector("#p-error")
     if (!error) {
         error = document.createElement("p");
         error.id = "p-error";
     }
-    if (valueCep.length < 8) {
+
+
+    if (valueCep.length < 8 || valueCep.length > 8) {
+        error.remove()
         cep.classList.add("error")
         rua.value = "";
         cidade.value = "";
         estado.value = "";
         bairro.value = "";
+        numero.value = "";
+        error.innerText = "";
         header.appendChild(error)
-        error.innerText = "Cep Inválido"
+        error.style.color = "red"
 
+        error.innerText = "Cep Inválido"
+        return;
+
+    } else {
+        error.innerText = "";
+
+        header.appendChild(error)
+        error.innerText = "Dados cadastrados com Sucesso!"
+        error.style.color = "black"
     }
     let formValid = true;
-    [cep, rua, cidade, estado, bairro,rua,numero].forEach((field) => {
+    [cep, rua, cidade, estado, bairro, rua, numero].forEach((field) => {
         if (!field.value) {
-            field.classList.add("error");
             formValid = false;
+            error.remove()
+
+            error.style.color = "red"
             header.appendChild(error)
-            error.innerText = "Cep Inválido"
+            error.innerText = "Preencha todos os dados!"
         } else {
+            error.remove()
+
             field.classList.remove("error");
+            header.appendChild(error)
+            error.innerText = "Dados cadastrados com Sucesso!"
+            error.style.color = "black"
         }
     });
-    header.appendChild(error)
-    error.innerText = "Dados cadastrados com Sucesso"
-    error.style.color = "black"
+
 }
 cep.addEventListener("blur", searchAdress)
 form.addEventListener("submit", validationForm)
